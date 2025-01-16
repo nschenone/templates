@@ -1,0 +1,55 @@
+services:
+  flask:
+    restart: unless-stopped
+    build: .
+    image: {{cookiecutter.service_name}}
+    container_name: {{cookiecutter.service_name}}
+    env_file:
+      - .env
+    ports:
+      - "${EXPOSE_PORT}:80"
+    environment:
+      - TZ=America/Los_Angeles
+    networks:
+{%- if cookiecutter.local %}
+      - proxy
+{%- endif %}
+{%- if cookiecutter.public %}
+      - proxy_external
+{%- endif %}
+    labels:
+{%- if cookiecutter.maestro %}
+      - "maestro.enable=true"
+      - "maestro.tags=server,pyservice"
+{%- endif %}
+{%- if cookiecutter.uptimekuma %}
+      - "kuma.__docker=true"
+      - "traefik.enable=true"
+{%- endif %}
+{%- if cookiecutter.traefik %}
+{%- if cookiecutter.local %}
+      - "traefik.http.routers.{{cookiecutter.service_name}}.rule=Host(`{{cookiecutter.service_name}}.{{cookiecutter.local_domain}}`)"
+      - "traefik.http.routers.{{cookiecutter.service_name}}.entrypoints=https"
+      - "traefik.http.routers.{{cookiecutter.service_name}}.tls=true"
+      - "traefik.http.services.{{cookiecutter.service_name}}.loadbalancer.server.port=${FASTAPI_PORT}"
+{%- endif %}
+{%- if cookiecutter.public %}
+      - "traefik.http.routers.{{cookiecutter.service_name}}.service={{cookiecutter.service_name}}"
+      - "traefik.http.routers.{{cookiecutter.service_name}}-external.rule=Host(`{{cookiecutter.service_name}}.{{cookiecutter.public_domain}}`)"
+      - "traefik.http.routers.{{cookiecutter.service_name}}-external.entrypoints=https-external"
+      - "traefik.http.routers.{{cookiecutter.service_name}}-external.tls=true"
+      - "traefik.http.services.{{cookiecutter.service_name}}-external.loadbalancer.server.port=${FASTAPI_PORT}"
+      - "traefik.http.routers.{{cookiecutter.service_name}}-external.service={{cookiecutter.service_name}}-external"
+      - "traefik.http.routers.{{cookiecutter.service_name}}-external.middlewares=traefik-auth" 
+{%- endif %}
+{%- endif %}
+
+networks:
+{%- if cookiecutter.local %}
+  proxy:
+    external: true
+{%- endif %}
+{%- if cookiecutter.public %}
+  proxy_external:
+    external: true
+{%- endif %}

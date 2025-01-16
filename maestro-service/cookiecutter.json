@@ -1,0 +1,12 @@
+{
+  "service_name": "test",
+  "project_slug": "{{cookiecutter.service_name|lower|replace('-', '_')}}",
+  "local_domain": "local.domain.com",
+  "public_domain": "domain.com",
+  "traefik": true,
+  "local": true,
+  "public": false,
+  "maestro": true,
+  "uptimekuma": true,
+  "expose_port": 9999
+}
