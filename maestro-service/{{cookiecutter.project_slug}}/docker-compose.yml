@@ -20,7 +20,11 @@ services:
     labels:
 {%- if cookiecutter.maestro %}
       - "maestro.enable=true"
+{%- if cookiecutter.pyservice %}
       - "maestro.tags=server,pyservice"
+{%- else %}
+      - "maestro.tags=server"
+{%- endif %}
 {%- endif %}
 {%- if cookiecutter.uptimekuma %}
       - "kuma.__docker=true"
