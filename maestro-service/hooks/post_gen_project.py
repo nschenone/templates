@@ -10,6 +10,8 @@ REMOVE_PATHS = [
     '{% if not cookiecutter.pyservice %}requirements.txt{% endif %}',
 ]
 
+print(REMOVE_PATHS)
+
 # Loop through paths and remove them if they exist
 for path_str in REMOVE_PATHS:
     path = Path(path_str.strip())
