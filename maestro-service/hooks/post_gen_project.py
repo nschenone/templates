@@ -12,7 +12,7 @@ REMOVE_PATHS = [
 
 # Loop through paths and remove them if they exist
 for path_str in REMOVE_PATHS:
-    path = Path(path_str.strip())
+    path = Path(path_str)
     if path.exists():
         if path.is_file():
             path.unlink()  # Remove file
