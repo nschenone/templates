@@ -1,16 +1,20 @@
-import os
+from pathlib import Path
 
-os.rename('default.env', '.env')
+Path('default.env').rename('.env')
 
 REMOVE_PATHS = [
-    '{% if cookiecutter.pyservice %}src{% endif %}',
-    '{% if cookiecutter.pyservice %}.env{% endif %}',
-    '{% if cookiecutter.pyservice %}Dockerfile{% endif %}',
-    '{% if cookiecutter.pyservice %}pyproject.toml{% endif %}',
-    '{% if cookiecutter.pyservice %}requirements.txt{% endif %}',
+    '{% if not cookiecutter.pyservice %}src{% endif %}',
+    '{% if not cookiecutter.pyservice %}.env{% endif %}',
+    '{% if not cookiecutter.pyservice %}Dockerfile{% endif %}',
+    '{% if not cookiecutter.pyservice %}pyproject.toml{% endif %}',
+    '{% if not cookiecutter.pyservice %}requirements.txt{% endif %}',
 ]
 
-for path in REMOVE_PATHS:
-    path = path.strip()
-    if path and os.path.exists(path):
-        os.unlink(path) if os.path.isfile(path) else os.rmdir(path)
+# Loop through paths and remove them if they exist
+for path_str in REMOVE_PATHS:
+    path = Path(path_str.strip())
+    if path.exists():
+        if path.is_file():
+            path.unlink()  # Remove file
+        elif path.is_dir():
+            path.rmdir()  # Remove directory
