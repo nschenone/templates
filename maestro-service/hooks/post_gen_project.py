@@ -1,4 +1,5 @@
 from pathlib import Path
+import shutil
 
 Path('default.env').rename('.env')
 
@@ -10,15 +11,11 @@ REMOVE_PATHS = [
     '{% if not cookiecutter.pyservice %}requirements.txt{% endif %}',
 ]
 
-print(REMOVE_PATHS)
-
-# Loop through paths and remove them if they exist
 for path_str in REMOVE_PATHS:
     if path_str:
         path = Path(path_str.strip())
-        print(path)
         if path.exists():
             if path.is_file():
-                path.unlink()  # Remove file
+                path.unlink()
             elif path.is_dir():
-                path.rmdir()  # Remove directory
+                shutil.rmtree(path)
