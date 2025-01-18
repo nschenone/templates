@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.rule=Host(`{{cookiecutter.service_name}}.{{cookiecutter.public_domain}}`)"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.entrypoints=https-external"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.tls=true"
-      - "traefik.http.services.{{cookiecutter.service_name}}-external.loadbalancer.server.port=${FASTAPI_PORT}"
+      - "traefik.http.services.{{cookiecutter.service_name}}-external.loadbalancer.server.port=${EXPOSE_PORT}"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.service={{cookiecutter.service_name}}-external"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.middlewares=traefik-auth" 
 {%- endif %}
