@@ -36,14 +36,14 @@ services:
       - "traefik.http.routers.{{cookiecutter.service_name}}.rule=Host(`{{cookiecutter.service_name}}.{{cookiecutter.local_domain}}`)"
       - "traefik.http.routers.{{cookiecutter.service_name}}.entrypoints=https"
       - "traefik.http.routers.{{cookiecutter.service_name}}.tls=true"
-      - "traefik.http.services.{{cookiecutter.service_name}}.loadbalancer.server.port=${EXPOSE_PORT}"
+      - "traefik.http.services.{{cookiecutter.service_name}}.loadbalancer.server.port=80"
 {%- endif %}
 {%- if cookiecutter.public %}
       - "traefik.http.routers.{{cookiecutter.service_name}}.service={{cookiecutter.service_name}}"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.rule=Host(`{{cookiecutter.service_name}}.{{cookiecutter.public_domain}}`)"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.entrypoints=https-external"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.tls=true"
-      - "traefik.http.services.{{cookiecutter.service_name}}-external.loadbalancer.server.port=${EXPOSE_PORT}"
+      - "traefik.http.services.{{cookiecutter.service_name}}-external.loadbalancer.server.port=80"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.service={{cookiecutter.service_name}}-external"
       - "traefik.http.routers.{{cookiecutter.service_name}}-external.middlewares=traefik-auth" 
 {%- endif %}
