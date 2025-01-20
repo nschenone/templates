@@ -1,4 +1,3 @@
-{%- if cookiecutter.pyservice %}
 services:
   flask:
     restart: unless-stopped
@@ -57,5 +56,4 @@ networks:
 {%- if cookiecutter.public %}
   proxy_external:
     external: true
-{%- endif %}
 {%- endif %}
