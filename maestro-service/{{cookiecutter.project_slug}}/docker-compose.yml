@@ -1,11 +1,13 @@
 services:
-  flask:
+  {{cookiecutter.service_name}}:
     restart: unless-stopped
     build: .
     image: {{cookiecutter.service_name}}
     container_name: {{cookiecutter.service_name}}
+{%- if cookiecutter.pyservice %}
     env_file:
       - .env
+{%- endif %}
     ports:
       - "${EXPOSE_PORT}:80"
     environment:
